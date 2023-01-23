@@ -15,6 +15,21 @@
 class SimpleSamlPhp_AuthAdapter implements Zend_Auth_Adapter_Interface
 {
     /**
+     * @var string Attribute provided by SSP to match with Omeka user data.
+     */
+    public $attribute = 'uid';
+
+    /**
+     * @var string Format the attribute via sprintf() before matching.
+     */
+    public $format = '';
+
+    /**
+     * @var bool Match Omeka user's email to attribute, otherwise username.
+     */
+    public $email = false;
+
+    /**
      * @var \SimpleSAML\Auth\Simple SSP authenticator.
      */
     protected $_auth;
@@ -43,19 +58,15 @@ class SimpleSamlPhp_AuthAdapter implements Zend_Auth_Adapter_Interface
      */
     public function authenticate()
     {
-        $attribute = 'uid';
-        $format = '%s@bgsu.edu';
-        $email = true;
-
         $attributes = $this->_auth->getAttributes();
 
-        if (!empty($attributes[$attribute])) {
-            foreach ($attributes[$attribute] as $value) {
-                if ($format) {
-                    $value = sprintf($format, $value);
+        if (!empty($attributes[$this->attribute])) {
+            foreach ($attributes[$this->attribute] as $value) {
+                if ($this->format) {
+                    $value = sprintf($this->format, $value);
                 }
 
-                if ($email) {
+                if ($this->email) {
                     $user = get_db()->getTable('User')->findByEmail($value);
                 } else {
                     $user = get_db()->getTable('User')->findBySql(
@@ -78,7 +89,7 @@ class SimpleSamlPhp_AuthAdapter implements Zend_Auth_Adapter_Interface
                 $value,
                 array(__(
                     '%s matching "%s" not found.',
-                    $email ? 'Email' : 'Username',
+                    ($this->email ? 'Email' : 'Username'),
                     $value
                 ))
             );

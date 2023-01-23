@@ -210,7 +210,12 @@ class SimpleSamlPhp_UsersController extends UsersController
         $authSource = get_option('simple_saml_php_auth_source');
 
         if ($path && $authSource) {
-            return new SimpleSamlPhp_AuthAdapter($path, $authSource);
+            $adapter = new SimpleSamlPhp_AuthAdapter($path, $authSource);
+            $adapter->attribute = get_option('simple_saml_php_attribute');
+            $adapter->format = get_option('simple_saml_php_format');
+            $adapter->email = get_option('simple_saml_php_email');
+
+            return $adapter;
         }
 
         return null;
