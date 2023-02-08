@@ -44,7 +44,8 @@ class SimpleSamlPhpPlugin extends Omeka_Plugin_AbstractPlugin
         'simple_saml_php_email' => false,
         'simple_saml_php_plugin_title' => '',
         'simple_saml_php_plugin_button' => '',
-        'simple_saml_php_default_title' => ''
+        'simple_saml_php_default_title' => '',
+        'simple_saml_php_logout_url' => '',
     );
 
     /**

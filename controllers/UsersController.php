@@ -189,10 +189,13 @@ class SimpleSamlPhp_UsersController extends UsersController
         $adapter = $this->_getAdapter();
 
         if ($adapter) {
-            $adapter->logout(
-                $this->view->serverUrl().
-                $this->view->url('/')
-            );
+            $logout_url = get_option('simple_saml_php_logout_url');
+
+            if (empty($logout_url)) {
+                $logout_url = $this->view->serverUrl(). $this->view->url('/');
+            }
+
+            $adapter->logout($logout_url);
         }
 
         // Otherwise,redirect to main page.

@@ -89,6 +89,16 @@ $sections = array(
                 ' not be displayed if left blank.'
             )
         )
+    ),
+    'Logout' => array(
+        array(
+            'name' => 'simple_saml_php_logout_url',
+            'label' => __('Logout URL'),
+            'explanation' => __(
+                'URL to redirect to after logout. Will redirect to login page'.
+                ' if left blank.'
+            )
+        )
     )
 );
 ?>
